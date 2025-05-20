@@ -1,0 +1,20 @@
+Title: User Account Management Policy (AC-2)
+Framework: NIST 800-53
+Control: AC-2
+
+Purpose:
+To define requirements for creating, managing, and reviewing user accounts within the organization’s information systems.
+
+Policy:
+- All user accounts must be uniquely assigned to individuals and reviewed quarterly.
+- Management approval is required for the creation and deactivation of all user accounts.
+- Accounts not used for 90 days must be disabled.
+- Temporary accounts shall be automatically disabled after the expiration date.
+
+Procedures:
+- Quarterly reviews are performed by the Compliance Team and documented in the audit system.
+- Access requests and deactivations are logged and require manager sign-off.
+- Review evidence must be retained for a minimum of one year for audit purposes.
+
+Last Reviewed: 2024-03-01
+Owner: Compliance Officer
