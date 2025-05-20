@@ -1,0 +1,8 @@
+# App configuration
+chunk_size: 500
+overlap: 50
+embedding_model: "openai"
+llm_model: "gpt-3.5-turbo"
+pinecone_index: "regscale-ccm"
+elasticsearch_index: "regscale-ccm"
+retriever_top_k: 10
