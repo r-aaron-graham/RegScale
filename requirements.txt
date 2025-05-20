@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+langchain
+openai
+pinecone-client
+elasticsearch
+python-dotenv
+pydantic
+httpx
+tqdm
+PyYAML
