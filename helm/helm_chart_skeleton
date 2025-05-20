@@ -1,0 +1,21 @@
+# helm/values.yaml
+replicaCount: 2
+image:
+  repository: your-dockerhub/regscale-ccm
+  tag: latest
+  pullPolicy: Always
+env:
+  OPENAI_API_KEY: ""
+  PINECONE_API_KEY: ""
+  ELASTIC_HOST: ""
+  # ... other envs
+service:
+  type: ClusterIP
+  port: 8000
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 512Mi
