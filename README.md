@@ -1,59 +1,31 @@
-# RegScale CCM – RAG-Optimized Compliance Automation Platform
+# RegScale compliance retrieval prototype
 
-**Continuous Controls Monitoring powered by Retrieval-Augmented Generation, LangChain, Pinecone, and Elasticsearch**
+An independent compliance retrieval prototype. The reviewer API searches a bundled sample policy and returns a cited excerpt or abstains. It uses no external services. The original Pinecone, Elasticsearch, and LangChain integration sketches are outside this demo.
 
----
+## Run the example
 
-## Overview
+```sh
+python -m pip install -c requirements.lock -r requirements-reviewer.txt
+python -m uvicorn reviewer:app --host 127.0.0.1 --port 8000
+```
 
-RegScale CCM (Continuous Controls Monitoring) is an intelligent compliance automation system designed to radically accelerate audit readiness, evidence gathering, and continuous compliance for regulated enterprises.
+In another terminal:
 
-**Powered by a hybrid RAG (Retrieval-Augmented Generation) architecture**, this solution leverages the best of vector search (Pinecone), keyword retrieval (Elasticsearch), and LLM orchestration (LangChain + GPT-4/3.5) to ground responses in real-time, organization-specific controls evidence.
+```sh
+curl -X POST http://127.0.0.1:8000/query -H 'Content-Type: application/json' -d '{"question":"What is AC-2?"}'
+```
 
-> **Mission:** Deliver on-demand, audit-ready answers with transparent sourcing, proactive gap detection, and instant remediation actions – fully aligned with RegScale’s compliance-first ethos and production standards.
+Expected result: a cited answer from `sample_policy.txt` for AC-2.
 
----
+## Deployment verification
 
-## Table of Contents
+Use Python 3.12 on Linux. CI and the container use the checked-in dependency constraints.
 
-- [Architecture](#architecture)
-- [How It Works](#how-it-works)
-- [Key Benefits](#key-benefits)
-- [Cost Efficiency Strategies](#cost-efficiency-strategies)
-- [Production Readiness](#production-readiness)
-- [Getting Started](#getting-started)
-- [Deployment: Docker & Helm](#deployment-docker--helm)
-- [Configuration](#configuration)
-- [Extending the Platform](#extending-the-platform)
-- [Roadmap & Contributions](#roadmap--contributions)
-- [License](#license)
+```sh
+python -m pip install -c requirements.lock -r requirements-dev.txt
+python -m pytest -q
+docker build -t reviewer-smoke .
+docker run --rm -p 127.0.0.1:8000:8000 reviewer-smoke
+```
 
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-  subgraph Ingestion
-    A[Cloud Services & SaaS APIs] -->|Metadata & Logs| B[Pre-Processor]
-  end
-  subgraph Storage & Indexing
-    B --> C[Chunking & Embeddings]
-    C --> D[Vector DB (Pinecone)]
-    B --> E[Elasticsearch]
-  end
-  subgraph Orchestration (LangChain)
-    F[User Query / Alert Trigger] --> G[Retriever]
-    G -->|Vectors| D
-    G -->|Keywords| E
-    G --> H[HybridRanker]
-    H --> I[LLM + Prompt Templates]
-    I --> J[Answer / Compliance Report]
-  end
-  subgraph Automation & Feedback
-    J --> K[Auto-Generated Evidence Artifacts]
-    K --> L[Audit Dashboard]
-    L --> M[Active Learning Loop]
-    M --> C
-  end
-
+The container serves the API docs at `http://127.0.0.1:8000/docs`. Use the local example above to exercise its main route. Use synthetic inputs. Shared deployment requires authentication, resource limits, and operational verification.
